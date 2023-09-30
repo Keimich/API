@@ -1,0 +1,47 @@
+version: '3.9'
+
+volumes:
+  mysql-data-api:
+
+networks:
+  api-network:
+    driver: bridge
+
+services:
+  mysql-api:
+    image: mysql:latest
+    container_name: mysql-api
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - mysql-data-api:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    networks:
+      - api-network
+  
+  api:
+    build: .
+    command: npm run dev
+    container_name: api
+    env_file:
+      - .env
+    volumes:
+      - .:/home/api
+    ports:
+      - 3000:3000
+    depends_on:
+      - mysql-api
+    environment:
+      DB_HOST: mysql-api
+      DB_USER: ${MYSQL_USER}
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+      DB_DATABASE: ${MYSQL_DATABASE}
+    networks:
+      - api-network
