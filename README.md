@@ -17,7 +17,7 @@ Agora é preciso entrar no contêiner da API e rodar o seguinte comando:
 ```
 npx prisma db push
 ```
-Este comando vai ser responsável por criar as tabelas no banco de dados conforme o arquivo [schema.prisma](https://github.com/Keimich/API/blob/main/schema.prisma)
+Este comando vai ser responsável por criar as tabelas no banco de dados conforme o arquivo [schema.prisma](https://github.com/Keimich/API/blob/main/prisma/schema.prisma)
 
 Feito os comandos a cima a API já deve funcionar!
 
