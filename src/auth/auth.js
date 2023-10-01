@@ -39,9 +39,21 @@ function verifyRefreshToken(refreshToken) {
   }
 }
 
+// Função para retornar o token do authorization header
+function getTokenFromAuthorizationHeader(authorization) {
+  try {
+    const bearer = authorization.split(" ");
+    const bearerToken = bearer[1];
+    return bearerToken;
+  } catch (error) {
+    return null;
+  }
+}
+
 module.exports = {
   generateAccessToken,
   generateRefreshToken,
   verifyToken,
   verifyRefreshToken,
+  getTokenFromAuthorizationHeader
 };
