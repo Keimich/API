@@ -1,9 +1,10 @@
-const { verifyToken } = require("../auth/auth");
+const { verifyToken, getTokenFromAuthorizationHeader } = require("../auth/auth");
 
 // Função para verificar se a requisição está autenticada e se o token pertence ao usuário
 function validateUserToken(req, res, next) {
   try {
-    const token = req.header("Authorization");
+    const authorizationHeader = req.header("Authorization");
+    const token = getTokenFromAuthorizationHeader(authorizationHeader);
 
     if (!token) {
       return res.status(401).json({ message: "Acesso não autorizado" });
