@@ -1,16 +1,12 @@
 const Token = require("../models/token");
 const userService = require("../services/userService");
+const tokenService = require("../services/tokenService");
 const { generateAccessToken, verifyToken, verifyRefreshToken } = require("../auth/auth");
 
 // Controlador para criar um novo token
 async function createToken(user) {
   try {
-    const token = await Token.create({
-      user_id: user.id,
-      jwt_token: user.token,
-      refresh_token: user.refreshToken,
-    });
-
+    const token = await tokenService.createToken(user.id, user.token, user.refreshToken);
     return token;
   } catch (error) {
     throw new Error("Erro ao criar o token");
@@ -80,7 +76,7 @@ async function updateToken(req, res) {
 // Controlador para excluir um token pelo ID do usuário
 async function softDeleteTokenByUserId(userId) {
   try {
-    await Token.softDeleteByUserId(userId);
+    await tokenService.softDeleteTokenByUserId(userId);
   } catch (error) {
     throw new Error("Erro ao excluir o token");
   }

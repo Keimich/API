@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const userService = require("../services/userService");
+const tokenService = require("../services/tokenService");
 const { generateAccessToken, generateRefreshToken } = require("../auth/auth");
 const { hashPassword } = require("../auth/passwordUtils");
 const tokenController = require("./tokenController");
@@ -10,15 +11,11 @@ async function createUser(req, res) {
     const { username, email, password } = req.body;
     const hashedPassword = await hashPassword(password);
 
-    const user = await User.create({
-      username,
-      email,
-      password: hashedPassword,
-    });
+    const user = await userService.createUser(username, email, hashedPassword);
 
     user.token = generateAccessToken(user);
     user.refreshToken = generateRefreshToken(user);
-    await tokenController.createToken(user);
+    await tokenService.createToken(user.id, user.token, user.refreshToken);
 
     delete user.password;
     delete user.created_at;
@@ -37,7 +34,7 @@ async function getUserById(req, res) {
     let { id } = req.params;
     id = ~~id;
 
-    if (typeof id != "number") {
+    if (id == 0) {
       return res.status(404).json({ error: "Id inválido" });
     }
 
@@ -63,7 +60,7 @@ async function updateUser(req, res) {
     id = ~~id;
     const { username, email, password } = req.body;
 
-    if (typeof id != "number") {
+    if (id == 0) {
       return res.status(404).json({ error: "Id inválido" });
     }
 
@@ -84,7 +81,7 @@ async function updateUser(req, res) {
       user.password = hashedPassword;
     }
 
-    const updatedUser = await User.update(id, user);
+    const updatedUser = await userService.updateUser(id, user);
 
     delete updatedUser.password;
     delete updatedUser.created_at;
@@ -102,7 +99,7 @@ async function softDeleteUser(req, res) {
     let { id } = req.params;
     id = ~~id;
 
-    if (typeof id != "number") {
+    if (id == 0) {
       return res.status(404).json({ error: "Id inválido" });
     }
 
@@ -112,8 +109,8 @@ async function softDeleteUser(req, res) {
       return res.status(404).json({ error: "Usuário não encontrado" });
     }
 
-    await tokenController.softDeleteTokenByUserId(id);
-    const deletedUser = await User.softDelete(id);
+    await tokenService.softDeleteTokenByUserId(id);
+    const deletedUser = await userService.softDeleteUserById(id);
 
     delete deletedUser.password;
     delete deletedUser.created_at;
@@ -131,7 +128,7 @@ async function restoreUser(req, res) {
     let { id } = req.params;
     id = ~~id;
 
-    if (typeof id != "number") {
+    if (id == 0) {
       return res.status(404).json({ error: "Id inválido" });
     }
 

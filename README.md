@@ -24,6 +24,7 @@ Feito os comandos a cima a API já deve funcionar!
 ## ⚙️ Testes
 Para testar as funcionalidades da API basta realizar requisições para a mesma. No repositório tem uma [collection](https://github.com/Keimich/API/blob/main/api.postman_collection.json) que pode ser importada no [Postman](https://www.postman.com/), nela contem todas as rotas da API.
 
-## 📋 TO-DO
- - Implementação do [Swagger](https://swagger.io/)
- - Fazer teste automatizados utilizando o [Jest](https://jestjs.io/pt-BR/)
+Tambem é possivel usar os testes unitarios, basta rodar o comando, abaixo, na raiz do projeto:
+```
+npm test
+```
