@@ -3,9 +3,9 @@ const Token = require("../models/token");
 // Função para criar um token
 async function createToken(userId, jwtToken, refreshToken) {
   const token = await Token.create({
-    userId,
-    jwtToken,
-    refreshToken,
+    user_id: userId,
+    jwt_token: jwtToken,
+    refresh_token: refreshToken
   });
   return token;
 }

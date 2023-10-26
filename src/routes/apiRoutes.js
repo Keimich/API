@@ -4,6 +4,7 @@ const userController = require("../controllers/userController");
 const tokenController = require("../controllers/tokenController");
 const { isAuthenticated } = require("../middleware/authMiddleware");
 const { validateUserToken } = require("../middleware/authUserMiddleware");
+const { validateToken } = require("../middleware/authTokenMiddleware");
 
 /* ------------------------- Rotas para usuários ------------------------- */
 /**
@@ -351,6 +352,6 @@ router.put("/users/:id/restore", validateUserToken, userController.restoreUser);
  *     security:
  *      - bearerAuth: []
  */
-router.put("/tokens/:id", validateUserToken, tokenController.updateToken);
+router.put("/tokens/:id", validateToken, tokenController.updateToken);
 
 module.exports = router;
