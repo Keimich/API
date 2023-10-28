@@ -27,9 +27,12 @@ const { validateToken } = require("../middleware/authTokenMiddleware");
  *           schema:
  *             type: object
  *             properties:
- *               username:
+ *               name:
  *                 type: string
- *                 description: O nome de usuário do novo usuário.
+ *                 description: O nome do novo usuário.
+ *               last_name:
+ *                 type: string
+ *                 description: O sobrenome do novo usuário.
  *               email:
  *                 type: string
  *                 format: email
@@ -48,12 +51,16 @@ const { validateToken } = require("../middleware/authTokenMiddleware");
  *             schema:
  *               type: object
  *               properties:
- *                 id:
- *                   type: integer
- *                   description: O ID do novo usuário.
- *                 username:
+ *                 uuid:
  *                   type: string
- *                   description: O nome de usuário do novo usuário.
+ *                   format: uuid
+ *                   description: UUID do usuário criado
+ *                 name:
+ *                   type: string
+ *                   description: O nome do novo usuário.
+ *                 last_name:
+ *                   type: string
+ *                   description: O sobrenome do novo usuário.
  *                 email:
  *                   type: string
  *                   description: O endereço de e-mail do novo usuário.
