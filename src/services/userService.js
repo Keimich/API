@@ -1,8 +1,8 @@
 const User = require("../models/user");
 
 // Função para verificar se um usuário existe
-async function checkUserExists(id) {
-  const user = await User.findById(id);
+async function checkUserExists(uuid) {
+  const user = await User.findByUuid(uuid);
   return !!user;
 }
 
@@ -12,9 +12,9 @@ async function getUserByUuid(uuid) {
   return user;
 }
 
-// Função para atualizar um usuário pelo Id e usuário (data)
-async function updateUser(id, userData) {
-  const user = await User.update(id, userData);
+// Função para atualizar um usuário pelo UUID
+async function updateUser(userData) {
+  const user = await User.update(userData.uuid, userData);
   return user;
 }
 

@@ -131,17 +131,18 @@ router.get("/users/:uuid", isAuthenticated, userController.getUserByUuid);
 
 /**
  * @swagger
- * /users/{id}:
+ * /users/{uuid}:
  *   put:
- *     summary: Atualiza um usuário por ID.
- *     description: Use esta rota para atualizar um usuário existente com base no seu ID.
+ *     summary: Atualiza um usuário por UUID.
+ *     description: Use esta rota para atualizar um usuário existente com base no seu UUID.
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: uuid
  *         schema:
- *           type: integer
+ *           type: string
+ *           format: uuid
  *         required: true
- *         description: O ID do usuário que deseja atualizar.
+ *         description: O UUID do usuário que deseja atualizar.
  *     requestBody:
  *       required: true
  *       content:
@@ -149,9 +150,12 @@ router.get("/users/:uuid", isAuthenticated, userController.getUserByUuid);
  *           schema:
  *             type: object
  *             properties:
- *               username:
+ *               name:
  *                 type: string
- *                 description: O novo nome de usuário do usuário.
+ *                 description: O novo nome do usuário.
+ *               last_name:
+ *                 type: string
+ *                 description: O novo sobrenome do usuário.
  *               email:
  *                 type: string
  *                 description: O novo endereço de e-mail do usuário.
@@ -159,7 +163,7 @@ router.get("/users/:uuid", isAuthenticated, userController.getUserByUuid);
  *                 type: string
  *                 description: A nova senha do usuário.
  *             required:
- *               - username
+ *               - name
  *               - email
  *     tags:
  *       - Users
@@ -171,12 +175,16 @@ router.get("/users/:uuid", isAuthenticated, userController.getUserByUuid);
  *             schema:
  *               type: object
  *               properties:
- *                 id:
- *                   type: integer
- *                   description: O ID do usuário atualizado.
- *                 username:
+ *                 uuid:
  *                   type: string
- *                   description: O novo nome de usuário do usuário.
+ *                   format: uuid
+ *                   description: O UUID do usuário atualizado.
+ *                 name:
+ *                   type: string
+ *                   description: O novo nome do usuário.
+ *                 last_name:
+ *                   type: string
+ *                   description: O novo sobrenome do usuário.
  *                 email:
  *                   type: string
  *                   description: O novo endereço de e-mail do usuário.
@@ -184,18 +192,18 @@ router.get("/users/:uuid", isAuthenticated, userController.getUserByUuid);
  *                   type: string
  *                   format: date-time
  *                   description: A data e hora da atualização.
- *       400:
- *         description: Requisição inválida. Certifique-se de fornecer dados válidos para atualização.
  *       401:
  *         description: Não autorizado. Requer autenticação.
+ *       403:
+ *         description: Acesso não autorizado.
  *       404:
- *         description: Não encontrado. O ID fornecido é inválido ou o usuário não existe.
+ *         description: Não encontrado. O UUID fornecido é inválido ou o usuário não existe.
  *       500:
  *         description: Erro interno do servidor. Falha ao atualizar o usuário.
  *     security:
  *      - bearerAuth: []
  */
-router.put("/users/:id", validateUserToken, userController.updateUser);
+router.put("/users/:uuid", validateUserToken, userController.updateUser);
 
 /**
  * @swagger

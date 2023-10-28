@@ -53,23 +53,19 @@ async function getUserByUuid(req, res) {
 // Controlador para atualizar um usuário
 async function updateUser(req, res) {
   try {
-    let { id } = req.params;
-    id = ~~id;
-    const { username, email, password } = req.body;
+    let { uuid } = req.params;
+    const { name, last_name, email, password } = req.body;
 
-    if (id == 0) {
-      return res.status(404).json({ error: "Id inválido" });
-    }
-
-    const existingUser = await userService.checkUserExists(id);
+    const existingUser = await userService.checkUserExists(uuid);
 
     if (!existingUser) {
       return res.status(404).json({ error: "Usuário não encontrado" });
     }
 
-    const user = await userService.getUserById(id);
+    const user = await userService.getUserByUuid(uuid);
 
-    user.username = username;
+    user.name = name;
+    user.last_name = last_name;
     user.email = email;
     user.updated_at = new Date();
 
@@ -78,7 +74,7 @@ async function updateUser(req, res) {
       user.password = hashedPassword;
     }
 
-    const updatedUser = await userService.updateUser(id, user);
+    const updatedUser = await userService.updateUser(user);
 
     delete updatedUser.password;
     delete updatedUser.created_at;

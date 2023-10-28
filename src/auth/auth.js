@@ -3,7 +3,7 @@ const { JWT_SECRET, REFRESH_TOKEN_SECRET } = require("../../config/config");
 
 // Função para gerar um token JWT
 function generateAccessToken(user) {
-  const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, {
+  const token = jwt.sign({ uuid: user.uuid, name: user.name, last_name: user.last_name }, JWT_SECRET, {
     expiresIn: "1h",
   });
 
@@ -13,7 +13,7 @@ function generateAccessToken(user) {
 // Função para gerar um refresh token
 function generateRefreshToken(user) {
   const refreshToken = jwt.sign(
-    { id: user.id, username: user.username },
+    { uuid: user.uuid, name: user.name, last_name: user.last_name },
     REFRESH_TOKEN_SECRET
   );
   return refreshToken;

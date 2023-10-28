@@ -28,10 +28,10 @@ const User = {
   },
 
   // Função para atualizar um usuário
-  async update(id, data) {
+  async update(uuid, user) {
     return prisma.users.update({
-      where: { id },
-      data,
+      where: { uuid: uuid },
+      data: user
     });
   },
 
