@@ -25,11 +25,13 @@ async function softDeleteUserById(id) {
 }
 
 // Função para criar um usuário
-async function createUser(username, email, password) {
+async function createUser(uuid, name, last_name, email, password) {
   const user = await User.create({
-    username,
+    uuid, 
+    name, 
+    last_name,
     email,
-    password,
+    password
   });
   return user;
 }

@@ -1,28 +1,19 @@
 version: '3.9'
 
-volumes:
-  mysql-data-api:
-
 networks:
   api-network:
     driver: bridge
 
 services:
-  mysql-api:
-    image: mysql:latest
-    container_name: mysql-api
-    restart: always
-    env_file:
-      - .env
-    volumes:
-      - mysql-data-api:/var/lib/mysql
-    ports:
-      - "3306:3306"
+  postgres-api:
+    image: postgres:latest
+    container_name: postgres-api
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      POSTGRES_USER: ${POSTGRESQL_USER}
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
+      POSTGRES_DB: ${POSTGRESQL_DATABASE}
+    ports:
+      - "5432:5432"
     networks:
       - api-network
   
@@ -37,11 +28,11 @@ services:
     ports:
       - 3000:3000
     depends_on:
-      - mysql-api
+      - postgres-api
     environment:
-      DB_HOST: mysql-api
-      DB_USER: ${MYSQL_USER}
-      DB_PASSWORD: ${MYSQL_PASSWORD}
-      DB_DATABASE: ${MYSQL_DATABASE}
+      DB_HOST: postgres-api
+      DB_USER: ${POSTGRESQL_USER}
+      DB_PASSWORD: ${POSTGRESQL_PASSWORD}
+      DB_DATABASE: ${POSTGRESQL_DATABASE}
     networks:
       - api-network

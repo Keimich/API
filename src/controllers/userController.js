@@ -1,3 +1,4 @@
+const { v4: uuidv4 } = require('uuid');
 const User = require("../models/user");
 const userService = require("../services/userService");
 const tokenService = require("../services/tokenService");
@@ -8,14 +9,15 @@ const tokenController = require("./tokenController");
 // Controlador para criar um novo usuário
 async function createUser(req, res) {
   try {
-    const { username, email, password } = req.body;
+    const { name, last_name, email, password } = req.body;
     const hashedPassword = await hashPassword(password);
+    const uuid = uuidv4();
 
-    const user = await userService.createUser(username, email, hashedPassword);
+    const user = await userService.createUser(uuid, name, last_name, email, hashedPassword);
 
     user.token = generateAccessToken(user);
     user.refreshToken = generateRefreshToken(user);
-    await tokenService.createToken(user.id, user.token, user.refreshToken);
+    await tokenService.createToken(user.uuid, user.token, user.refreshToken);
 
     delete user.password;
     delete user.created_at;
