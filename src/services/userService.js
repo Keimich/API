@@ -6,9 +6,9 @@ async function checkUserExists(id) {
   return !!user;
 }
 
-// Função para pegar um usuário pelo Id
-async function getUserById(id) {
-  const user = await User.findById(id);
+// Função para pegar um usuário pelo UUID
+async function getUserByUuid(uuid) {
+  const user = await User.findByUuid(uuid);
   return user;
 }
 
@@ -38,7 +38,7 @@ async function createUser(uuid, name, last_name, email, password) {
 
 module.exports = {
   checkUserExists,
-  getUserById,
+  getUserByUuid,
   updateUser,
   softDeleteUserById,
   createUser

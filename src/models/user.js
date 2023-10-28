@@ -4,10 +4,10 @@ const prisma = new PrismaClient();
 
 const User = {
   // Função para buscar um usuário por ID
-  async findById(id) {
+  async findByUuid(uuid) {
     return prisma.users.findUnique({
       where: {
-        id: id,
+        uuid: uuid,
         deleted_at: null,
       },
     });

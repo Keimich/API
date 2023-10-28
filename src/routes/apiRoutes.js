@@ -77,19 +77,20 @@ router.post("/users", userController.createUser);
 
 /**
  * @swagger
- * /users/{id}:
+ * /users/{uuid}:
  *   get:
- *     summary: Busca um usuário por ID.
- *     description: Use esta rota para buscar um usuário específico pelo seu ID.
+ *     summary: Busca um usuário por UUID.
+ *     description: Use esta rota para buscar um usuário específico pelo seu UUID.
  *     tags:
  *       - Users
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: uuid
  *         schema:
- *           type: integer
+ *           type: string
+ *           format: uuid
  *         required: true
- *         description: O ID do usuário que deseja buscar.
+ *         description: O UUID do usuário que deseja buscar.
  *     responses:
  *       200:
  *         description: Sucesso. Retorna o usuário encontrado.
@@ -98,12 +99,16 @@ router.post("/users", userController.createUser);
  *             schema:
  *               type: object
  *               properties:
- *                 id:
- *                   type: integer
- *                   description: O ID do usuário.
- *                 username:
+ *                 uuid:
  *                   type: string
- *                   description: O nome de usuário do usuário.
+ *                   format: uuid
+ *                   description: O UUID do usuário.
+ *                 name:
+ *                   type: string
+ *                   description: O nome do usuário.
+ *                 last_name:
+ *                   type: string
+ *                   description: O sobrenome do usuário.
  *                 email:
  *                   type: string
  *                   description: O endereço de e-mail do usuário.
@@ -115,18 +120,14 @@ router.post("/users", userController.createUser);
  *                   type: string
  *                   format: date-time
  *                   description: A data e hora da atualização.
- *               required:
- *                 - id
- *                 - username
- *                 - email
  *       401:
  *         description: Não autorizado. Requer autenticação.
  *       404:
- *         description: Não encontrado. O ID fornecido é inválido ou o usuário não existe.
+ *         description: Usuário não encontrado.
  *     security:
  *       - bearerAuth: []
  */
-router.get("/users/:id", isAuthenticated, userController.getUserById);
+router.get("/users/:uuid", isAuthenticated, userController.getUserByUuid);
 
 /**
  * @swagger

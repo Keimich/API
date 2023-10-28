@@ -31,16 +31,11 @@ async function createUser(req, res) {
 }
 
 // Controlador para buscar um usuário
-async function getUserById(req, res) {
+async function getUserByUuid(req, res) {
   try {
-    let { id } = req.params;
-    id = ~~id;
+    let { uuid } = req.params;
 
-    if (id == 0) {
-      return res.status(404).json({ error: "Id inválido" });
-    }
-
-    const user = await userService.getUserById(id);
+    const user = await userService.getUserByUuid(uuid);
 
     if (!user) {
       return res.status(404).json({ error: "Usuário não encontrado" });
@@ -155,7 +150,7 @@ async function restoreUser(req, res) {
 
 module.exports = {
   createUser,
-  getUserById,
+  getUserByUuid,
   updateUser,
   softDeleteUser,
   restoreUser,
