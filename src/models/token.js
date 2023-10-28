@@ -25,12 +25,10 @@ const Token = {
     });
   },
 
-  // Função para excluir um token pelo ID do usuário
-  async softDeleteByUserId(userId) {
+  // Função para excluir um token pelo uuid do usuário
+  async softDeleteByUserUuid(userUuid) {
     return prisma.tokens.update({
-      where: {
-        user_id: userId,
-      },
+      where: { user_uuid: userUuid },
       data: {
         deleted_at: new Date(),
       },

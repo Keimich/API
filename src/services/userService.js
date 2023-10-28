@@ -19,8 +19,8 @@ async function updateUser(userData) {
 }
 
 // Função para deletar (soft delete) um usuário pelo Id
-async function softDeleteUserById(id) {
-  const user = await User.softDelete(id);
+async function softDeleteUserByUuid(uuid) {
+  const user = await User.softDelete(uuid);
   return user;
 }
 
@@ -40,6 +40,6 @@ module.exports = {
   checkUserExists,
   getUserByUuid,
   updateUser,
-  softDeleteUserById,
+  softDeleteUserByUuid,
   createUser
 };

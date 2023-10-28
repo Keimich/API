@@ -36,9 +36,9 @@ const User = {
   },
 
   // Função para excluir (soft delete) um usuário
-  async softDelete(id) {
+  async softDelete(uuid) {
     return prisma.users.update({
-      where: { id },
+      where: { uuid: uuid },
       data: {
         deleted_at: new Date(),
       },

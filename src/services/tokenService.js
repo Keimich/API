@@ -10,9 +10,9 @@ async function createToken(userUuid, jwtToken, refreshToken) {
   return token;
 }
 
-// Função para deletar (soft delete) um token pelo userId
-async function softDeleteTokenByUserId(userId) {
-  await Token.softDeleteByUserId(userId);
+// Função para deletar (soft delete) um token pelo userUuid
+async function softDeleteTokenByUserUuid(userUuid) {
+  await Token.softDeleteByUserUuid(userUuid);
 }
 
-module.exports = { createToken, softDeleteTokenByUserId };
+module.exports = { createToken, softDeleteTokenByUserUuid };

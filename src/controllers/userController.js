@@ -89,21 +89,16 @@ async function updateUser(req, res) {
 // Controlador para excluir um usuário
 async function softDeleteUser(req, res) {
   try {
-    let { id } = req.params;
-    id = ~~id;
+    let { uuid } = req.params;
 
-    if (id == 0) {
-      return res.status(404).json({ error: "Id inválido" });
-    }
-
-    const existingUser = await userService.checkUserExists(id);
+    const existingUser = await userService.checkUserExists(uuid);
 
     if (!existingUser) {
       return res.status(404).json({ error: "Usuário não encontrado" });
     }
 
-    await tokenService.softDeleteTokenByUserId(id);
-    const deletedUser = await userService.softDeleteUserById(id);
+    const deletedUser = await userService.softDeleteUserByUuid(uuid);
+    await tokenService.softDeleteTokenByUserUuid(uuid);
 
     delete deletedUser.password;
     delete deletedUser.created_at;
