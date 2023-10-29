@@ -1,5 +1,5 @@
 # Imagem base Node.js
-FROM node:latest
+FROM docker.io/node:lts
 
 # Diretório de trabalho
 WORKDIR /home/api
@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 3000
 
 # Comando a ser executado ao iniciar o container
-CMD ["npm", "run", "start"]
+CMD ["npm", "start"]

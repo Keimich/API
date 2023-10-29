@@ -5,21 +5,8 @@ networks:
     driver: bridge
 
 services:
-  postgres-api:
-    image: postgres:latest
-    container_name: postgres-api
-    environment:
-      POSTGRES_USER: ${POSTGRESQL_USER}
-      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
-      POSTGRES_DB: ${POSTGRESQL_DATABASE}
-    ports:
-      - "5432:5432"
-    networks:
-      - api-network
-  
   api:
     build: .
-    command: npm run start
     container_name: api
     env_file:
       - .env
@@ -34,5 +21,17 @@ services:
       DB_USER: ${POSTGRESQL_USER}
       DB_PASSWORD: ${POSTGRESQL_PASSWORD}
       DB_DATABASE: ${POSTGRESQL_DATABASE}
+    networks:
+      - api-network
+
+  postgres-api:
+    image: postgres:latest
+    container_name: postgres-api
+    environment:
+      POSTGRES_USER: ${POSTGRESQL_USER}
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
+      POSTGRES_DB: ${POSTGRESQL_DATABASE}
+    ports:
+      - "5432:5432"
     networks:
       - api-network
