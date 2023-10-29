@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "jest",
-    "dev": "cd src && node index.js"
+    "start": "cd src && node server.js",
+    "dev": "cd src && nodemon server.js"
   },
   "author": "",
   "license": "ISC",
