@@ -323,17 +323,18 @@ router.put("/users/:uuid/restore", validateUserToken, userController.restoreUser
 
 /**
  * @swagger
- * /tokens/{id}:
+ * /tokens/{uuid}:
  *   put:
- *     summary: Atualiza um token pelo ID do usuário.
- *     description: Use esta rota para atualizar um token associado a um usuário pelo ID do usuário.
+ *     summary: Atualiza um token pelo UUID do usuário.
+ *     description: Use esta rota para atualizar um token associado a um usuário pelo UUID do usuário.
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: uuid
  *         schema:
- *           type: integer
+ *           type: string
+ *           format: uuid
  *         required: true
- *         description: O ID do usuário cujo token deve ser atualizado.
+ *         description: O UUID do usuário cujo token deve ser atualizado.
  *       - in: body
  *         name: body
  *         description: Objeto contendo os tokens JWT e Refresh para atualização.
@@ -341,10 +342,10 @@ router.put("/users/:uuid/restore", validateUserToken, userController.restoreUser
  *         schema:
  *           type: object
  *           properties:
- *             jwtToken:
+ *             jwt_token:
  *               type: string
  *               description: O novo token JWT.
- *             refreshToken:
+ *             refresh_token:
  *               type: string
  *               description: O novo Refresh Token.
  *     tags:
@@ -357,27 +358,27 @@ router.put("/users/:uuid/restore", validateUserToken, userController.restoreUser
  *             schema:
  *               type: object
  *               properties:
- *                 userId:
- *                   type: integer
- *                   description: O ID do usuário associado ao token.
- *                 jwtToken:
+ *                 jwt_token:
  *                   type: string
  *                   description: O token JWT atualizado.
- *                 updatedAt:
+ *                 refresh_token:
+ *                   type: string
+ *                   description: O refresh token JWT.
+ *                 updated_at:
  *                   type: string
  *                   format: date-time
  *                   description: A data e hora da atualização do token.
- *       400:
- *         description: Requisição inválida. Certifique-se de fornecer um ID de usuário válido e os tokens corretos no corpo da requisição.
  *       401:
  *         description: Não autorizado. O token JWT fornecido é inválido.
+ *       403:
+ *         description: Acesso não autorizado
  *       404:
- *         description: Não encontrado. O ID fornecido é inválido ou o usuário não existe.
+ *         description: Não encontrado. O UUID fornecido é inválido ou o usuário não existe.
  *       500:
  *         description: Erro interno do servidor. Falha ao atualizar o token.
  *     security:
  *      - bearerAuth: []
  */
-router.put("/tokens/:id", validateToken, tokenController.updateToken);
+router.put("/tokens/:uuid", validateToken, tokenController.updateToken);
 
 module.exports = router;

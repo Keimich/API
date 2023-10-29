@@ -18,9 +18,9 @@ const Token = {
   },
 
   // Função para atualizar um token
-  async update({ userId, jwtToken, updatedAt }) {
+  async update({ userUuid, jwtToken, updatedAt }) {
     return prisma.tokens.update({
-      where: { user_id: userId },
+      where: { user_uuid: userUuid },
       data: { jwt_token: jwtToken, updated_at: updatedAt },
     });
   },
