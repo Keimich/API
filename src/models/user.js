@@ -4,10 +4,10 @@ const prisma = new PrismaClient();
 
 const User = {
   // Função para buscar um usuário por ID
-  async findById(id) {
+  async findByUuid(uuid) {
     return prisma.users.findUnique({
       where: {
-        id: id,
+        uuid: uuid,
         deleted_at: null,
       },
     });
@@ -28,36 +28,36 @@ const User = {
   },
 
   // Função para atualizar um usuário
-  async update(id, data) {
+  async update(uuid, user) {
     return prisma.users.update({
-      where: { id },
-      data,
+      where: { uuid: uuid },
+      data: user
     });
   },
 
   // Função para excluir (soft delete) um usuário
-  async softDelete(id) {
+  async softDelete(uuid) {
     return prisma.users.update({
-      where: { id },
+      where: { uuid: uuid },
       data: {
         deleted_at: new Date(),
       },
     });
   },
 
-  // Função para buscar um usuário deletado por ID
-  async findDeletedById(id) {
+  // Função para buscar um usuário deletado por UUID
+  async findDeletedByUuid(uuid) {
     return prisma.users.findUnique({
       where: {
-        id: id,
+        uuid: uuid,
       },
     });
   },
 
   // Função para restaurar um usuário
-  async restore(id) {
+  async restore(uuid) {
     return prisma.users.update({
-      where: { id },
+      where: { uuid: uuid },
       data: {
         deleted_at: null,
       },

@@ -1,3 +1,4 @@
+const { v4: uuidv4 } = require('uuid');
 const User = require("../models/user");
 const userService = require("../services/userService");
 const tokenService = require("../services/tokenService");
@@ -8,14 +9,15 @@ const tokenController = require("./tokenController");
 // Controlador para criar um novo usuário
 async function createUser(req, res) {
   try {
-    const { username, email, password } = req.body;
+    const { name, last_name, email, password } = req.body;
     const hashedPassword = await hashPassword(password);
+    const uuid = uuidv4();
 
-    const user = await userService.createUser(username, email, hashedPassword);
+    const user = await userService.createUser(uuid, name, last_name, email, hashedPassword);
 
     user.token = generateAccessToken(user);
     user.refreshToken = generateRefreshToken(user);
-    await tokenService.createToken(user.id, user.token, user.refreshToken);
+    await tokenService.createToken(user.uuid, user.token, user.refreshToken);
 
     delete user.password;
     delete user.created_at;
@@ -29,16 +31,11 @@ async function createUser(req, res) {
 }
 
 // Controlador para buscar um usuário
-async function getUserById(req, res) {
+async function getUserByUuid(req, res) {
   try {
-    let { id } = req.params;
-    id = ~~id;
+    let { uuid } = req.params;
 
-    if (id == 0) {
-      return res.status(404).json({ error: "Id inválido" });
-    }
-
-    const user = await userService.getUserById(id);
+    const user = await userService.getUserByUuid(uuid);
 
     if (!user) {
       return res.status(404).json({ error: "Usuário não encontrado" });
@@ -56,23 +53,19 @@ async function getUserById(req, res) {
 // Controlador para atualizar um usuário
 async function updateUser(req, res) {
   try {
-    let { id } = req.params;
-    id = ~~id;
-    const { username, email, password } = req.body;
+    let { uuid } = req.params;
+    const { name, last_name, email, password } = req.body;
 
-    if (id == 0) {
-      return res.status(404).json({ error: "Id inválido" });
-    }
-
-    const existingUser = await userService.checkUserExists(id);
+    const existingUser = await userService.checkUserExists(uuid);
 
     if (!existingUser) {
       return res.status(404).json({ error: "Usuário não encontrado" });
     }
 
-    const user = await userService.getUserById(id);
+    const user = await userService.getUserByUuid(uuid);
 
-    user.username = username;
+    user.name = name;
+    user.last_name = last_name;
     user.email = email;
     user.updated_at = new Date();
 
@@ -81,7 +74,7 @@ async function updateUser(req, res) {
       user.password = hashedPassword;
     }
 
-    const updatedUser = await userService.updateUser(id, user);
+    const updatedUser = await userService.updateUser(user);
 
     delete updatedUser.password;
     delete updatedUser.created_at;
@@ -96,21 +89,16 @@ async function updateUser(req, res) {
 // Controlador para excluir um usuário
 async function softDeleteUser(req, res) {
   try {
-    let { id } = req.params;
-    id = ~~id;
+    let { uuid } = req.params;
 
-    if (id == 0) {
-      return res.status(404).json({ error: "Id inválido" });
-    }
-
-    const existingUser = await userService.checkUserExists(id);
+    const existingUser = await userService.checkUserExists(uuid);
 
     if (!existingUser) {
       return res.status(404).json({ error: "Usuário não encontrado" });
     }
 
-    await tokenService.softDeleteTokenByUserId(id);
-    const deletedUser = await userService.softDeleteUserById(id);
+    const deletedUser = await userService.softDeleteUserByUuid(uuid);
+    await tokenService.softDeleteTokenByUserUuid(uuid);
 
     delete deletedUser.password;
     delete deletedUser.created_at;
@@ -125,21 +113,16 @@ async function softDeleteUser(req, res) {
 // Controlador para restaurar um usuário
 async function restoreUser(req, res) {
   try {
-    let { id } = req.params;
-    id = ~~id;
+    let { uuid } = req.params;
 
-    if (id == 0) {
-      return res.status(404).json({ error: "Id inválido" });
-    }
-
-    const existingUser = await User.findDeletedById(id);
+    const existingUser = await User.findDeletedByUuid(uuid);
 
     if (!existingUser) {
       return res.status(404).json({ error: "Usuário não encontrado" });
     }
 
-    await tokenController.restoreTokenByUserId(id);
-    const restoredUser = await User.restore(id);
+    const restoredUser = await User.restore(uuid);
+    await tokenController.restoreTokenByUserUuid(uuid);
 
     delete restoredUser.password;
     delete restoredUser.created_at;
@@ -153,7 +136,7 @@ async function restoreUser(req, res) {
 
 module.exports = {
   createUser,
-  getUserById,
+  getUserByUuid,
   updateUser,
   softDeleteUser,
   restoreUser,

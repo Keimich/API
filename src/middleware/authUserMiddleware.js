@@ -16,9 +16,9 @@ function validateUserToken(req, res, next) {
       return res.status(401).json({ message: "Token inválido ou expirado" });
     }
 
-    const { id } = req.params;
+    const { uuid } = req.params;
 
-    if (decodedToken.id != id) {
+    if (decodedToken.uuid != uuid) {
       return res.status(403).json({ message: "Acesso não autorizado" });
     }
 

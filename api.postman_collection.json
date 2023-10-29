@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"joao.teste\",\n    \"email\": \"joao.teste@gmail.com\",\n    \"password\": \"Batman123!\"\n}",
+							"raw": "{\n    \"name\": \"joao\",\n    \"last_name\": \"teste\",\n    \"email\": \"joao.teste@gmail.com\",\n    \"password\": \"Batman123!\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -64,17 +64,17 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/users/:id",
+							"raw": "{{base_url}}/users/:uuid",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"users",
-								":id"
+								":uuid"
 							],
 							"variable": [
 								{
-									"key": "id",
+									"key": "uuid",
 									"value": ""
 								}
 							]
@@ -99,7 +99,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"jorge.silva\",\n    \"email\": \"jorge.silva@gmail.com\",\n    \"password\": \"Batman123!\"\n}",
+							"raw": "{\n    \"name\": \"Joao\",\n    \"last_name\": \"Teste\",\n    \"email\": \"joao.teste@gmail.com\",\n    \"password\": \"Batman321!\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -107,17 +107,17 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/users/:id",
+							"raw": "{{base_url}}/users/:uuid",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"users",
-								":id"
+								":uuid"
 							],
 							"variable": [
 								{
-									"key": "id",
+									"key": "uuid",
 									"value": ""
 								}
 							]
@@ -150,17 +150,17 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/users/:id",
+							"raw": "{{base_url}}/users/:uuid",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"users",
-								":id"
+								":uuid"
 							],
 							"variable": [
 								{
-									"key": "id",
+									"key": "uuid",
 									"value": ""
 								}
 							]
@@ -193,18 +193,18 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/users/:id/restore",
+							"raw": "{{base_url}}/users/:uuid/restore",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"users",
-								":id",
+								":uuid",
 								"restore"
 							],
 							"variable": [
 								{
-									"key": "id",
+									"key": "uuid",
 									"value": ""
 								}
 							]
@@ -234,7 +234,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"jwtToken\": \"{{token}}\",\n    \"refreshToken\": \"{{refresh_token}}\"\n}   ",
+							"raw": "{\n    \"jwt_token\": \"{{token}}\",\n    \"refresh_token\": \"{{refresh_token}}\"\n}   ",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -242,13 +242,19 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/tokens/1",
+							"raw": "{{base_url}}/tokens/:uuid",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"tokens",
-								"1"
+								":uuid"
+							],
+							"variable": [
+								{
+									"key": "uuid",
+									"value": ""
+								}
 							]
 						}
 					},

@@ -26,45 +26,39 @@ async function getTokenByUserId(req, res) {
 // Controlador para atualizar um token
 async function updateToken(req, res) {
   try {
-    let { id } = req.params;
-    userId = ~~id;
-    const { jwtToken, refreshToken } = req.body;
-
-    if (typeof userId != "number") {
-      return res.status(404).json({ error: "userId inválido" });
-    }
+    let { uuid } = req.params;
+    const { jwt_token, refresh_token } = req.body;
     
-    const existingUser = await userService.checkUserExists(userId);
+    const existingUser = await userService.checkUserExists(uuid);
 
     if (!existingUser) {
       return res.status(404).json({ error: "Usuário não encontrado" });
     }
 
-    const decodedToken = verifyToken(jwtToken);
+    const decodedToken = verifyToken(jwt_token);
 
     if (decodedToken) {
       return res.status(404).json({ error: "Token valido" });
     }
 
-    const decodedRefreshToken = verifyRefreshToken(refreshToken);
+    const decodedRefreshToken = verifyRefreshToken(refresh_token);
 
     if (!decodedRefreshToken) {
       return res.status(401).json({ error: "Refresh token inválido" });
     }
 
-    const user = await userService.getUserById(userId);
+    const user = await userService.getUserByUuid(uuid);
 
     const newToken = generateAccessToken(user);
 
     const token = await Token.update({
-      userId: userId,
+      userUuid: uuid,
       jwtToken: newToken,
       updatedAt: new Date(),
     });
 
-    delete token.id;
+    delete token.user_uuid;
     delete token.created_at;
-    delete token.updated_at;
     delete token.deleted_at;
 
     res.json(token);
@@ -82,10 +76,10 @@ async function softDeleteTokenByUserId(userId) {
   }
 }
 
-// Controlador para restaurar um token pelo ID do usuário
-async function restoreTokenByUserId(userId) {
+// Controlador para restaurar um token pelo UUID do usuário
+async function restoreTokenByUserUuid(userUuid) {
   try {
-    await Token.restoreByUserId(userId);
+    await Token.restoreByUserUuid(userUuid);
   } catch (error) {
     throw new Error("Erro ao restaurar o token");
   }
@@ -96,5 +90,5 @@ module.exports = {
   getTokenByUserId,
   updateToken,
   softDeleteTokenByUserId,
-  restoreTokenByUserId,
+  restoreTokenByUserUuid,
 };

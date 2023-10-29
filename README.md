@@ -12,7 +12,7 @@ Dependências instaladas, agora é hora de subir os contêineres que a API ira u
 ```
 docker-compose up -d api
 ```
-O comando a cima ira subir dois contêineres, um da API e um para a base de dados (MySql) onde ira ser salva as informações.</br>
+O comando a cima ira subir dois contêineres, um da API e um para a base de dados (PostgreSQL) onde ira ser salva as informações.</br>
 Agora é preciso entrar no contêiner da API e rodar o seguinte comando:
 ```
 npx prisma db push
@@ -28,3 +28,4 @@ Tambem é possivel usar os testes unitarios, basta rodar o comando, abaixo, na r
 ```
 npm test
 ```
+Os testes iram dar sucesso porem ainda não foram corrigidos para usar o UUID!

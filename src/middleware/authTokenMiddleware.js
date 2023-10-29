@@ -5,7 +5,7 @@ function validateToken(req, res, next) {
   try {
     const authorizationHeader = req.header("Authorization");
     const token = getTokenFromAuthorizationHeader(authorizationHeader);
-    const { jwtToken, refreshToken } = req.body;
+    const { jwt_token, refresh_token } = req.body;
 
     if (!token) {
       return res.status(401).json({ message: "Token faltando na requisição" });
@@ -19,7 +19,7 @@ function validateToken(req, res, next) {
       return res.status(403).json({ message: "Acesso não autorizado" });
     }
 
-    const decodedRefreshToken = verifyRefreshToken(refreshToken);
+    const decodedRefreshToken = verifyRefreshToken(refresh_token);
 
     if (!decodedToken && decodedRefreshToken.id != id) {
       return res.status(403).json({ message: "Acesso não autorizado" });

@@ -18,30 +18,28 @@ const Token = {
   },
 
   // Função para atualizar um token
-  async update({ userId, jwtToken, updatedAt }) {
+  async update({ userUuid, jwtToken, updatedAt }) {
     return prisma.tokens.update({
-      where: { user_id: userId },
+      where: { user_uuid: userUuid },
       data: { jwt_token: jwtToken, updated_at: updatedAt },
     });
   },
 
-  // Função para excluir um token pelo ID do usuário
-  async softDeleteByUserId(userId) {
+  // Função para excluir um token pelo uuid do usuário
+  async softDeleteByUserUuid(userUuid) {
     return prisma.tokens.update({
-      where: {
-        user_id: userId,
-      },
+      where: { user_uuid: userUuid },
       data: {
         deleted_at: new Date(),
       },
     });
   },
 
-  // Função para restaurar um token pelo ID do usuário
-  async restoreByUserId(userId) {
+  // Função para restaurar um token pelo UUID do usuário
+  async restoreByUserUuid(userUuid) {
     return prisma.tokens.update({
       where: {
-        user_id: userId,
+        user_uuid: userUuid,
       },
       data: {
         updated_at: new Date(),
