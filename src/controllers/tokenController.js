@@ -82,10 +82,10 @@ async function softDeleteTokenByUserId(userId) {
   }
 }
 
-// Controlador para restaurar um token pelo ID do usuário
-async function restoreTokenByUserId(userId) {
+// Controlador para restaurar um token pelo UUID do usuário
+async function restoreTokenByUserUuid(userUuid) {
   try {
-    await Token.restoreByUserId(userId);
+    await Token.restoreByUserUuid(userUuid);
   } catch (error) {
     throw new Error("Erro ao restaurar o token");
   }
@@ -96,5 +96,5 @@ module.exports = {
   getTokenByUserId,
   updateToken,
   softDeleteTokenByUserId,
-  restoreTokenByUserId,
+  restoreTokenByUserUuid,
 };

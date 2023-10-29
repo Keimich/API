@@ -261,17 +261,18 @@ router.delete("/users/:uuid", validateUserToken, userController.softDeleteUser);
 
 /**
  * @swagger
- * /users/{id}/restore:
+ * /users/{uuid}/restore:
  *   put:
- *     summary: Restaura um usuário excluído por ID.
- *     description: Use esta rota para restaurar um usuário excluído por soft delete com base no seu ID.
+ *     summary: Restaura um usuário excluído por UUID.
+ *     description: Use esta rota para restaurar um usuário excluído por soft delete com base no seu UUID.
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: uuid
  *         schema:
- *           type: integer
+ *           type: string
+ *           format: uuid
  *         required: true
- *         description: O ID do usuário que deseja restaurar.
+ *         description: O UUID do usuário que deseja restaurar.
  *     tags:
  *       - Users
  *     responses:
@@ -282,12 +283,16 @@ router.delete("/users/:uuid", validateUserToken, userController.softDeleteUser);
  *             schema:
  *               type: object
  *               properties:
- *                 id:
- *                   type: integer
- *                   description: O ID do usuário restaurado.
- *                 username:
+ *                 uuid:
  *                   type: string
- *                   description: O nome de usuário do usuário.
+ *                   format: uuid
+ *                   description: O UUID do usuário restaurado.
+ *                 name:
+ *                   type: string
+ *                   description: O nome do usuário.
+ *                 last_name:
+ *                   type: string
+ *                   description: O sobrenome do usuário.
  *                 email:
  *                   type: string
  *                   description: O endereço de e-mail do usuário.
@@ -295,10 +300,10 @@ router.delete("/users/:uuid", validateUserToken, userController.softDeleteUser);
  *                   type: string
  *                   format: date-time
  *                   description: A data e hora do soft delete.
- *       400:
- *         description: Requisição inválida. Certifique-se de fornecer um ID de usuário válido.
  *       401:
  *         description: Não autorizado. Requer autenticação.
+ *       403:
+ *         description: Acesso não autorizado.
  *       404:
  *         description: Não encontrado. O ID fornecido é inválido ou o usuário não existe.
  *       500:
@@ -306,7 +311,7 @@ router.delete("/users/:uuid", validateUserToken, userController.softDeleteUser);
  *     security:
  *      - bearerAuth: []
  */
-router.put("/users/:id/restore", validateUserToken, userController.restoreUser);
+router.put("/users/:uuid/restore", validateUserToken, userController.restoreUser);
 
 /* ------------------------- Rotas para tokens ------------------------- */
 /**

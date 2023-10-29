@@ -35,11 +35,11 @@ const Token = {
     });
   },
 
-  // Função para restaurar um token pelo ID do usuário
-  async restoreByUserId(userId) {
+  // Função para restaurar um token pelo UUID do usuário
+  async restoreByUserUuid(userUuid) {
     return prisma.tokens.update({
       where: {
-        user_id: userId,
+        user_uuid: userUuid,
       },
       data: {
         updated_at: new Date(),

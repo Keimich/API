@@ -113,21 +113,16 @@ async function softDeleteUser(req, res) {
 // Controlador para restaurar um usuário
 async function restoreUser(req, res) {
   try {
-    let { id } = req.params;
-    id = ~~id;
+    let { uuid } = req.params;
 
-    if (id == 0) {
-      return res.status(404).json({ error: "Id inválido" });
-    }
-
-    const existingUser = await User.findDeletedById(id);
+    const existingUser = await User.findDeletedByUuid(uuid);
 
     if (!existingUser) {
       return res.status(404).json({ error: "Usuário não encontrado" });
     }
 
-    await tokenController.restoreTokenByUserId(id);
-    const restoredUser = await User.restore(id);
+    const restoredUser = await User.restore(uuid);
+    await tokenController.restoreTokenByUserUuid(uuid);
 
     delete restoredUser.password;
     delete restoredUser.created_at;

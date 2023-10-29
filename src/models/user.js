@@ -45,19 +45,19 @@ const User = {
     });
   },
 
-  // Função para buscar um usuário deletado por ID
-  async findDeletedById(id) {
+  // Função para buscar um usuário deletado por UUID
+  async findDeletedByUuid(uuid) {
     return prisma.users.findUnique({
       where: {
-        id: id,
+        uuid: uuid,
       },
     });
   },
 
   // Função para restaurar um usuário
-  async restore(id) {
+  async restore(uuid) {
     return prisma.users.update({
-      where: { id },
+      where: { uuid: uuid },
       data: {
         deleted_at: null,
       },
