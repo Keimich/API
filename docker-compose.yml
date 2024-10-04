@@ -1,6 +1,6 @@
 networks:
-  api-network:
-    driver: bridge
+  webnet:
+    external: true
 
 services:
   api:
@@ -16,7 +16,7 @@ services:
     depends_on:
       - postgres-api
     networks:
-      - api-network
+      - webnet
 
   postgres-api:
     image: postgres:latest
@@ -26,4 +26,4 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - api-network
+      - webnet
